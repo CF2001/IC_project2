@@ -7,23 +7,38 @@ using namespace cv;
 int main(int argc, char** argv)
 {
 	if (argc != 3) {
-		cerr << "usage: ex1.out <Image_Path> <final Image>" << endl;
+		cerr << "Usage : " << argv[0] << "<input filename> <output filename>\n";
 		return -1;
 	}
 	
-	char *originalImage = argv[1];
-	char *finalImage = argv[2];
+	char *inputFile = argv[1];
+	char *outputFile = argv[2];
+	
 	
 	Mat imageIn;
-	imageIn = imread(originalImage, 1);
+	imageIn = imread(inputFile);	// Read the image file
 	if (!imageIn.data) {
 		cerr << "No image data" << endl;
 		return -1;
 	}
 	
+	// Create output image 
+	Mat imageOut(imageIn.rows, imageIn.cols, imageIn.type());
 	
-	//namedWindow("Display Image", WINDOW_AUTOSIZE);
-	//imshow("Display Image", image);
-	//waitKey(0);
+	for (int i = 0; i < imageIn.rows; i++)
+	{
+		for (int j = 0; j < imageIn.cols; j++)
+		{
+			imageOut.ptr<Vec3b>(i)[j] = Vec3b(imageIn.ptr<Vec3b>(i)[j][0], imageIn.ptr<Vec3b>(i)[j][1], imageIn.ptr<Vec3b>(i)[j][2]);
+		}
+	}
+	
+	imwrite(outputFile,imageOut);
+	
+	namedWindow("Output image", WINDOW_NORMAL);
+    	resizeWindow("Output image", 800, 650);
+    	imshow("Output image", imageOut);
+	waitKey(0);
+	
 	return 0;
 }
