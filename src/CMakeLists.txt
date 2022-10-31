@@ -16,3 +16,7 @@ SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BASE_DIR}/../src-bin)
 ## Exercise 1
 add_executable( ex1 ex1.cpp )
 target_link_libraries( ex1 ${OpenCV_LIBS} )
+
+## Exercise 2
+add_executable( ex2 ex2.cpp )
+target_link_libraries( ex2 ${OpenCV_LIBS} )
