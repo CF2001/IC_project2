@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 	{
 		for (int j = 0; j < imageIn.cols; j++)
 		{
-			imageOut.ptr<Vec3b>(i)[j] = Vec3b(imageIn.ptr<Vec3b>(i)[j][0], imageIn.ptr<Vec3b>(i)[j][1], imageIn.ptr<Vec3b>(i)[j][2]);
+			imageOut.ptr<Vec3b>(i)[j] = Vec3b(imageIn.ptr<Vec3b>(i)[j][0], 								imageIn.ptr<Vec3b>(i)[j][1], 								imageIn.ptr<Vec3b>(i)[j][2]);
 		}
 	}
 	

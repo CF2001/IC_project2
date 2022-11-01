@@ -6,11 +6,17 @@
 
 #IncludeRegexTransform: 
 
+/home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/FilterType.h
+opencv2/opencv.hpp
+-
+
 /home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/ex2.cpp
 opencv2/opencv.hpp
 -
 stdio.h
 -
+FilterType.h
+/home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/FilterType.h
 
 /usr/local/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp
