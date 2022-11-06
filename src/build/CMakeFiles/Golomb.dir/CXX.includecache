@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/Golomb.cpp
+iostream
+-
+Golomb.h
+/home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/Golomb.h
+
+/home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/Golomb.h
+iostream
+-
+string
+-
+cstring
+-
+

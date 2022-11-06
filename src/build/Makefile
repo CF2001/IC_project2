@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named Golomb
+
+# Build rule for target.
+Golomb: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Golomb
+.PHONY : Golomb
+
+# fast build rule for target.
+Golomb/fast:
+	$(MAKE) -f CMakeFiles/Golomb.dir/build.make CMakeFiles/Golomb.dir/build
+.PHONY : Golomb/fast
+
+#=============================================================================
 # Target rules for targets named ex2
 
 # Build rule for target.
@@ -135,6 +148,33 @@ ex1: cmake_check_build_system
 ex1/fast:
 	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/build
 .PHONY : ex1/fast
+
+Golomb.o: Golomb.cpp.o
+
+.PHONY : Golomb.o
+
+# target to build an object file
+Golomb.cpp.o:
+	$(MAKE) -f CMakeFiles/Golomb.dir/build.make CMakeFiles/Golomb.dir/Golomb.cpp.o
+.PHONY : Golomb.cpp.o
+
+Golomb.i: Golomb.cpp.i
+
+.PHONY : Golomb.i
+
+# target to preprocess a source file
+Golomb.cpp.i:
+	$(MAKE) -f CMakeFiles/Golomb.dir/build.make CMakeFiles/Golomb.dir/Golomb.cpp.i
+.PHONY : Golomb.cpp.i
+
+Golomb.s: Golomb.cpp.s
+
+.PHONY : Golomb.s
+
+# target to generate assembly for a file
+Golomb.cpp.s:
+	$(MAKE) -f CMakeFiles/Golomb.dir/build.make CMakeFiles/Golomb.dir/Golomb.cpp.s
+.PHONY : Golomb.cpp.s
 
 ex1.o: ex1.cpp.o
 
@@ -198,8 +238,12 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... Golomb"
 	@echo "... ex2"
 	@echo "... ex1"
+	@echo "... Golomb.o"
+	@echo "... Golomb.i"
+	@echo "... Golomb.s"
 	@echo "... ex1.o"
 	@echo "... ex1.i"
 	@echo "... ex1.s"
