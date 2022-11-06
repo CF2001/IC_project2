@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <cmath>
 
 using namespace std;
 
@@ -21,7 +22,6 @@ class Golomb {
 		}
 		return binNumber;
 	}
-	
 	
 	/*** Convert a positive number to 32-bit binary ***/
 	string positiveInt_to_binary(int quotient, int remainder)
@@ -76,6 +76,7 @@ class Golomb {
 		int bitRes { 0 };
 		string binTwoComplement { };
 		string binOneComplement { };
+		string binNumber { };
 		
 		binOneComplement = oneComplement(binTmp);
 		int lastSig_bit { (int)binOneComplement.size()-1 };
@@ -83,38 +84,31 @@ class Golomb {
 		
 		for (int i = lastSig_bit; i >= 0; i--)
 		{
-			cout << "Iteracao: " << i << " Bit: "<< binOneComplement[i] << endl;
 			
 			if(i == lastSig_bit)
 			{
-				cout << "last BIT" << endl;
 				//bitAux = ((binOneComplement[i] == '0') ? 0 : 1) + 1 + carry_out;
 				bitAux = (binOneComplement[i]-'0') + 1 + carry_out;
-				cout << "Bit aux: " << bitAux << endl;
 			}else{
-				cout << "another BIT" << bitAux << endl;
 				//bitAux = ((binOneComplement[i] == '0') ? 0 : 1) + 0 + carry_out;
 				bitAux = (binOneComplement[i]-'0') + 0 + carry_out;
-				cout << "Bit aux: " << bitAux << endl;
 			}
 			
 			if (bitAux == 2) 
 			{
 				bitRes = 2 - bitAux;
-				cout << "bitRES: " << bitRes << endl;
 				carry_out = 1;
-				cout << "Carry_out: " << carry_out << endl;
 			}else{
 				bitRes = bitAux;
-				cout << "bitRES: " << bitRes << endl;
 				carry_out = 0;
-				cout << "Carry_out: " << carry_out << endl;
 			}
 			//binTwoComplement += ((bitRes == 0) ? "0" : "1");
 			binTwoComplement += (bitRes + '0');
 		}
+
+		binNumber = mostSigtBit_to_leastSigBit(binTwoComplement);
 	
-		return binTwoComplement;
+		return binNumber;
 	}
 	
 	/***  
@@ -140,35 +134,61 @@ class Golomb {
 		{
 			binNumber = positiveInt_to_binary(q, r);
 			
-			cout << binNumber << endl;
-			
 			return binNumber;
 		}else{
 
 			binTmp = positiveInt_to_binary(q, r);
-			binTwoComplement = twoComplement(binTmp);
-			binNumber = mostSigtBit_to_leastSigBit(binTwoComplement);
+			binNumber= twoComplement(binTmp);
 
-			cout << binNumber << endl;
-			
 			return binNumber;
 		}
 		return " ";
 	}
-	
-	
 	
 	/***  
 	*    DECODER
 	*	
 	*    Decodes a string of bits => generating the corresponding integer
 	***/
-	int decoder()
+	int decoder(string binary)
 	{
-		return 0;
+		string binTwoComplement {};
+		int sumWeight { 0 };
+		int weight {(int)binary.size()-1};
+		
+		cout << "weight: " << weight << endl;
+		
+		binTwoComplement = twoComplement(binary);
+		
+		cout << "Binary positive: " << binTwoComplement << endl;
+		
+		// Applies the sum of the weight of each bit
+		for (int i = 0; i < (int)binTwoComplement.size(); i++)
+		{
+			cout << "BIT: " << binTwoComplement[i]-'0' << endl;
+			sumWeight += (binTwoComplement[i]-'0') * pow(2,weight);
+			cout << "SUM weight: " << sumWeight << endl;
+			weight--;
+		}
+		
+		// Check if the value is positive or negative
+		if (binary[0] == '1')
+		{
+			sumWeight *= -1;
+		}
+		
+		return sumWeight;
 	}
 
+
 };
+
+
+
+
+
+
+
 
 
 

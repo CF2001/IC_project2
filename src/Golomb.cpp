@@ -7,9 +7,11 @@ using namespace std;
 
 int main() {
 
+	// Just for test
 	Golomb g { };
 	
-	g.encoder(-21);
+	cout << g.decoder(g.encoder(-17831)) << endl;
+	
 	
 	
 	return 0;
