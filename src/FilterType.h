@@ -56,6 +56,43 @@ class FilterType {
 			writeImage(outputFile, imageOut, nameOutputImg);
 		}
 		
+		/*** Rotates an image by a multiple of 90º ***/
+		void imageRotate(Mat imageIn, Mat imageOut, char *outputFile, const char *nameOutputImg)
+		{
+			
+		}
+		
+		/*** Increase the intensity value of an image **/
+		void imageMoreLight(Mat imageIn , Mat imageOut , char *outputFile , const char *nameOutputImg , int beta)
+		{
+		
+		
+			for( int y = 0; y < imageIn.rows; y++ ) {
+				for( int x = 0; x < imageIn.cols; x++ ) {
+	    				for( int c = 0; c < imageIn.channels(); c++ ) {   // Channels RGB
+                				imageOut.at<Vec3b>(y,x)[c] = saturate_cast<uchar>(imageIn.at<Vec3b>(y,x)[c] + beta );
+			    		}
+				}
+		    	}	
+			writeImage(outputFile , imageOut , nameOutputImg);
+		
+		} 
+		
+		/*** Decrease the intensity value of an image **/
+		void imageLessLight(Mat imageIn , Mat imageOut , char *outputFile , const char *nameOutputImg , int beta)
+		{
+			
+			for( int y = 0; y < imageIn.rows; y++ ) {
+				for( int x = 0; x < imageIn.cols; x++ ) {
+	    				for( int c = 0; c < imageIn.channels(); c++ ) {   // Channels RGB
+                				imageOut.at<Vec3b>(y,x)[c] = saturate_cast<uchar>(imageIn.at<Vec3b>(y,x)[c] - beta );
+			    		}
+				}
+		    	}	
+			writeImage(outputFile , imageOut , nameOutputImg);
+		
+		} 
+		
 		void writeImage(char *outputFile,  Mat imageOut, const char *nameOutputImg)
 		{
 			imwrite(outputFile,imageOut);

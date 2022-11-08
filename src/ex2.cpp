@@ -17,6 +17,8 @@ int main(int argc, char** argv)
 	char *outputFile = argv[2];
 	int filterType = stoi(argv[3]);
 	
+	int beta = 0;
+	
 	Mat imageIn;
 	imageIn = imread(inputFile);	// Read the image file
 	if (!imageIn.data) {
@@ -43,6 +45,33 @@ int main(int argc, char** argv)
 		case 2: 	// Creates a mirrored version of an image vertically 
 		
 			filterT.imageVertically(imageIn, imageOut, outputFile, "imageVertical");
+			break;
+		case 3:		// Rotates an image by a multiple of 90º 
+			filterT.imageRotate(imageIn, imageOut, outputFile , "imageRotated");
+			break;
+		case 4:		// Increases the intensity values of an image 
+			
+			cout << "Insert the intensity value (>0): \n";
+			cin >> beta;
+			while(beta < 0)
+			{
+				cerr << "Error: must be > 0\n" ;
+				cin >> beta;
+			}
+			
+			filterT.imageMoreLight(imageIn , imageOut , outputFile , "imageMoreLight", beta);
+			
+			break;
+		case 5:		// Decreases the intensity values of an image 
+			
+			cout << "Insert the intensity value (>0): \n";
+			cin >> beta;
+			while(beta < 0)
+			{
+				cerr << "Error: must be > 0\n" ;
+				cin >> beta;
+			}
+			filterT.imageLessLight(imageIn , imageOut, outputFile, "imageLessLight" , beta);
 			break;
 	}
 	
