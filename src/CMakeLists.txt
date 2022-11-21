@@ -23,4 +23,7 @@ target_link_libraries( ex2 ${OpenCV_LIBS} )
 
 ## Exercise 3
 add_executable( Golomb Golomb.cpp )
-target_link_libraries( Golomb ) 
+
+## Exercise 4
+add_executable ( audioCodec audioCodec.cpp)
+target_link_libraries (audioCodec sndfile) 

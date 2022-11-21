@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named audioCodec
+
+# Build rule for target.
+audioCodec: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 audioCodec
+.PHONY : audioCodec
+
+# fast build rule for target.
+audioCodec/fast:
+	$(MAKE) -f CMakeFiles/audioCodec.dir/build.make CMakeFiles/audioCodec.dir/build
+.PHONY : audioCodec/fast
+
+#=============================================================================
 # Target rules for targets named Golomb
 
 # Build rule for target.
@@ -176,6 +189,33 @@ Golomb.cpp.s:
 	$(MAKE) -f CMakeFiles/Golomb.dir/build.make CMakeFiles/Golomb.dir/Golomb.cpp.s
 .PHONY : Golomb.cpp.s
 
+audioCodec.o: audioCodec.cpp.o
+
+.PHONY : audioCodec.o
+
+# target to build an object file
+audioCodec.cpp.o:
+	$(MAKE) -f CMakeFiles/audioCodec.dir/build.make CMakeFiles/audioCodec.dir/audioCodec.cpp.o
+.PHONY : audioCodec.cpp.o
+
+audioCodec.i: audioCodec.cpp.i
+
+.PHONY : audioCodec.i
+
+# target to preprocess a source file
+audioCodec.cpp.i:
+	$(MAKE) -f CMakeFiles/audioCodec.dir/build.make CMakeFiles/audioCodec.dir/audioCodec.cpp.i
+.PHONY : audioCodec.cpp.i
+
+audioCodec.s: audioCodec.cpp.s
+
+.PHONY : audioCodec.s
+
+# target to generate assembly for a file
+audioCodec.cpp.s:
+	$(MAKE) -f CMakeFiles/audioCodec.dir/build.make CMakeFiles/audioCodec.dir/audioCodec.cpp.s
+.PHONY : audioCodec.cpp.s
+
 ex1.o: ex1.cpp.o
 
 .PHONY : ex1.o
@@ -238,12 +278,16 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... audioCodec"
 	@echo "... Golomb"
 	@echo "... ex2"
 	@echo "... ex1"
 	@echo "... Golomb.o"
 	@echo "... Golomb.i"
 	@echo "... Golomb.s"
+	@echo "... audioCodec.o"
+	@echo "... audioCodec.i"
+	@echo "... audioCodec.s"
 	@echo "... ex1.o"
 	@echo "... ex1.i"
 	@echo "... ex1.s"

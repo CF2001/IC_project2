@@ -22,3 +22,13 @@ To test exercise 2:
 		To test the negative version of an image: 
 		../src-bin/ex2 ../imagesPPM/airplane.ppm outputFile.ppm 0
 		
+To test exercise 3:	
+
+	../src-bin/Golomb <txt file> <binary file> <m>	
+	
+		<txt file> =>  .txt file
+		<binary file> => .out file 
+		<m> => integer Golomb parameter
+		
+	Exemplification: 
+		

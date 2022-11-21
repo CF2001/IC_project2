@@ -6,8 +6,22 @@
 
 #IncludeRegexTransform: 
 
+/home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/BitStream.h
+iostream
+-
+string
+-
+vector
+-
+fstream
+-
+typeinfo
+-
+
 /home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/Golomb.cpp
 iostream
+-
+fstream
 -
 Golomb.h
 /home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/Golomb.h
@@ -21,4 +35,8 @@ cstring
 -
 cmath
 -
+fstream
+-
+BitStream.h
+/home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src/BitStream.h
 
