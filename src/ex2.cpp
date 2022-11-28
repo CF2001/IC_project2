@@ -48,6 +48,16 @@ int main(int argc, char** argv)
 			break;
 		case 3:		// Rotates an image by a multiple of 90º 
 			filterT.imageRotate(imageIn, imageOut, outputFile , "imageRotated");
+			cout << "Insert the angle value: \n";
+			cin >> angle;
+			while( angle % 90 != 0)
+			{
+				cerr << "Error: must be multiple of 90º\n" ;
+				cin >> angle;
+			}
+			
+			filterT.imageMoreLight(imageIn , imageOut , outputFile , "imageMoreLight", angle);
+			
 			break;
 		case 4:		// Increases the intensity values of an image 
 			

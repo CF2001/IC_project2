@@ -57,8 +57,9 @@ class FilterType {
 		}
 		
 		/*** Rotates an image by a multiple of 90º ***/
-		void imageRotate(Mat imageIn, Mat imageOut, char *outputFile, const char *nameOutputImg)
+		void imageRotate(Mat imageIn, Mat imageOut, char *outputFile, const char *nameOutputImg , int angle)
 		{
+			
 			
 		}
 		
