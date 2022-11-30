@@ -43,8 +43,10 @@ class FilterType {
 		/*** Creates a mirrored version of an image vertically ***/
 		void imageVertically(Mat imageIn, Mat imageOut, char *outputFile, const char *nameOutputImg)
 		{
+		
 			for (int row = 0; row < imageIn.rows; ++row)
 			{
+				
 				for (int col = 0; col < imageIn.cols; ++col)
 				{
 			           imageOut.ptr<Vec3b>(imageIn.rows-1-row)[col][0] = imageIn.ptr<Vec3b>(row)[col][0];
@@ -60,7 +62,16 @@ class FilterType {
 		void imageRotate(Mat imageIn, Mat imageOut, char *outputFile, const char *nameOutputImg , int angle)
 		{
 			
+			// Get the pixels of the center
+			Point2f center((imageIn.cols - 1)/2.0 , (imageIn.rows - 1)/2.0);
 			
+			//Get matrix
+			Mat rotation_matrix = getRotationMatrix2D(center , angle , 
+			1.0);
+			
+			warpAffine(imageIn , imageOut , rotation_matrix , imageIn.size());
+			
+			writeImage(outputFile, imageOut, nameOutputImg);
 		}
 		
 		/*** Increase the intensity value of an image **/

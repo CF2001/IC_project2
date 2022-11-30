@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "FilterType.h"
+#include <string.h>
 
 using namespace std;
 using namespace cv;
@@ -47,7 +48,8 @@ int main(int argc, char** argv)
 			filterT.imageVertically(imageIn, imageOut, outputFile, "imageVertical");
 			break;
 		case 3:		// Rotates an image by a multiple of 90º 
-			filterT.imageRotate(imageIn, imageOut, outputFile , "imageRotated");
+			
+			int angle;
 			cout << "Insert the angle value: \n";
 			cin >> angle;
 			while( angle % 90 != 0)
@@ -56,7 +58,23 @@ int main(int argc, char** argv)
 				cin >> angle;
 			}
 			
-			filterT.imageMoreLight(imageIn , imageOut , outputFile , "imageMoreLight", angle);
+			int wise;
+			cout << "Rotate to left(0) or right(1): \n";
+			cin >> wise;
+			while (wise > 1 || wise < 0) 
+			{
+				cerr << "Error: 0 to left and 1 to right\n";
+				cin >> wise;
+			}
+			
+			if (wise == 0) {
+				filterT.imageRotate(imageIn, imageOut, outputFile , "imageRotated", angle);
+			}
+			else if(wise == 1) {
+				filterT.imageRotate(imageIn, imageOut, outputFile , "imageRotated", -angle);
+			}
+				
+			
 			
 			break;
 		case 4:		// Increases the intensity values of an image 
