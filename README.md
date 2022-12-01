@@ -24,11 +24,17 @@ To test exercise 2:
 		
 To test exercise 3:	
 
-	../src-bin/Golomb <txt file> <binary file> <m>	
+	../src-bin/Golomb <inFileTxt> <outFileTxt> <binary File> <m> 
 	
-		<txt file> =>  .txt file
+		<inFileTxt> => input text file
+		<outFileTxt> => output text file
 		<binary file> => .out file 
 		<m> => integer Golomb parameter
 		
-	Exemplification: 
+	Exemplification:
+		../src-bin/Golomb encodeInt.txt decodeInt.txt binGolomb.out 8
 		
+
+To test exercise 4:
+	
+		../src-bin/audioCodec <wav file> <binary file> <typeAudioCodec> <nPredictor> 
