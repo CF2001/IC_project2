@@ -116,7 +116,7 @@ class BitStream
 		
 		
 		/* method to read N bits */
-		vector <int> read_Nbits(int nBits)
+		vector<int> read_Nbits(int nBits)
 		{
 			if (mode != 'r')
 			{	

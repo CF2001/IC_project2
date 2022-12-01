@@ -1,19 +1,26 @@
 #include <iostream>
-#include "Golomb.h"
-#include "Predictor.h"
+#include <sndfile.hh>
+#include <vector>
+
+#include "AudioCodec.h"
+
 
 constexpr size_t FRAMES_BUFFER_SIZE = 65536;
 int main (int argc, char** argv)
 {
 	
-	if(argc != 2) {
-		cerr << "Usage: " << argv[0] << " <wav file> \n";
+	if(argc != 6) {
+		cerr << "Usage: " << argv[0] << " <wavfileIn> <wavfileOut> <binary file> <typeAudioCodec> <nPredictor>\n";
 		return 1;
 	}
 	
-	char *inputFile = argv[1];
+	char *inputFileWav = argv[1];
+	char *outputFileWav = argv[2];
+	char *binaryFile = argv[3];
+	int typeAudioCodec = stoi(argv[4]);
+	int nPredictor = stoi(argv[5]);
 
-	SndfileHandle sndFile { inputFile };
+	SndfileHandle sndFile { inputFileWav };
 	if(sndFile.error()) {
 		cerr << "Error: invalid input file\n";
 		return 1;
@@ -29,31 +36,58 @@ int main (int argc, char** argv)
 		return 1;
 	}
 	
+	if (typeAudioCodec < 0 || typeAudioCodec > 1)
+	{
+		cerr << "Error: Only lossless or lossy audio exists. Lossless=0 or Lossy=1.\n";
+		return 1;
+	}
+	
+	if (nPredictor <= 0 || nPredictor > 3)
+	{
+		cerr << "Error: Wrong choice of predictor! There is only predictor 1,2 or 3.\n";
+		return 1;
+	}
+	
+	/*
+	int quantizationFactor; 
+	if (typeAudioCodec == 1)
+	{
+		cout << "Enter the quantization factor: " << endl;
+		cin >> quantizationFactor;
+	}else{
+		quantizationFactor = 1;	// initialization
+	}
+	
+	if (quantizationFactor < 0 || quantizationFactor > 15)
+	{
+		cerr << "Error: Wrong quantization factor.\n\n";
+		return 1;
+	}*/
+	
 	size_t nFrames;
-	/* Amostras do fichiro original */
-	vector<short> samples(FRAMES_BUFFER_SIZE * sndFile.channels()); 
+	vector<short> samples(FRAMES_BUFFER_SIZE * sndFile.channels()); // Amostras do fichiro original
+	vector<short> origSamples; // copia das amostras do fichiro original
 	
-	Predictor pred { 2 };
-	
-	vector<short> xnS;
+	AudioCodec audioC {sndFile};
 	
 	while((nFrames = sndFile.readf(samples.data(), FRAMES_BUFFER_SIZE)))
 	{
 		samples.resize(nFrames * sndFile.channels());
-		//pred.printSamples(samples);
-		pred.predictorLossless_allChannels(samples);
-		pred.reversePredLosseless_allChannels(samples);
+		for (size_t i = 0; i < samples.size(); i++)
+		{
+			origSamples.push_back(samples[i]);
+		}
 	}	
 	
 	/*
-	for (size_t i = 0; i < xnS.size(); i++)
+	for (size_t i = 0; i < origSamples.size(); i++)
 	{
-		cout << xnS[i] << endl;
-	}*/
+		cout << origSamples[i] << endl;
+	}
+	*/
 	
-	//pred.printPredictor();
-	//pred.printSamples();
-
-	
-	
+	audioC.compress(binaryFile, origSamples, typeAudioCodec, nPredictor, 2);
+	audioC.decompress(binaryFile, outputFileWav, nPredictor);
 }
+
+

@@ -3,6 +3,7 @@
 #include <cstring>
 #include <cmath>
 #include <fstream>
+#include <vector>
 
 #include "BitStream.h"
 
@@ -33,6 +34,11 @@ class Golomb {
 		binaryFile = fname;
 	}
 	
+	void set_m(int M)
+	{
+		mGolomb = M;
+	}
+	
 	
 	/*** Put from the most significant bit to the least significant bit ***/
 	string mostSigtBit_to_leastSigBit(string binTmp)
@@ -47,7 +53,7 @@ class Golomb {
 	}
 	
 	
-	/*** Convert a positive number to binary ***/
+	/*** Convert a positive number to binary -- from most to least significant bit ***/
 	string positiveInt_to_binary(int quotient, int remainder)
 	{
 		string binNumber { };
@@ -56,8 +62,6 @@ class Golomb {
 		
 		if (quotient == 0)
 			return "0";
-		/*else if (quotient == 1)
-			return "01";*/
 		
 		// successive divisions to obtain the binary value
 		// Note: the bits are still not in the right order
@@ -79,12 +83,12 @@ class Golomb {
 	int binary_to_integer(vector<int> binary, int b)
 	{
 		int number {0};
-		int weigth {0};
+		int weigth {b-1};	// peso mais alto (se b=3-->weightMSigBit = 2)
 		// Applying the sum of the bit weights
-		for (int i = b; i >= 0; i--)
+		for (int i = 0; i < b; i++)
 		{
 			number += (pow(2,weigth) * binary[i]);
-			weigth++;
+			weigth--;
 		}
 		return number;
 	}
@@ -104,6 +108,21 @@ class Golomb {
 		return unaryCode; 
 	}
 	
+	string paddingBinaryCode(int nBits, int binaryCodeBits, string binaryC)
+	{
+		int nbits = nBits - binaryCodeBits;
+		string binaryC_tmp {};
+		string newBinaryC {};
+		
+		for (int i = 0; i < nbits; i++)
+		{
+			binaryC_tmp += "0";
+		}
+		newBinaryC = binaryC_tmp + binaryC;
+		
+		return newBinaryC;
+	}
+	
 	/*** 
 	* It converts positive numbers to even numbers 
 	* and negative numbers to odd numbers. 
@@ -113,7 +132,6 @@ class Golomb {
 		return n*2;
 	    else
 		return abs(n)*2-1;
-
 	}
 
 	/*** 
@@ -125,7 +143,6 @@ class Golomb {
 		return n/2;
 	    else
 		return (-1)*ceil(n/2)-1;
-
 	}
 	
 	string encoder(int n)
@@ -142,80 +159,38 @@ class Golomb {
 		int nValuesR = pow(2,ceil(log2(mGolomb))) - mGolomb; // values of r (r -> 0,1,m-1)
 		
 		if ((mGolomb & (mGolomb-1)) == 0)	// mGolomb is a power of 2
-		{	
-			//cout << "Codificador - potencia de 2" << endl;
-		        //unaryC = unaryCode(q);
+		{
 			binaryC = positiveInt_to_binary(r,r%2);
-			//nBits = ceil(log2(mGolomb));
-			
-			// Garantir que binaryC para a potencia de 2 tenha exatamente ceil(log2(mGolomb)) bits
+			// Garantir que binaryC para a potencia de 2 tenha exatamente 'nBits' bits
 			if ((int)binaryC.size() < nBits)
 			{
-				nBits = nBits - binaryC.size();
-				string binaryC_tmp {};
-				for (int i = 0; i < nBits; i++)
-				{
-					binaryC_tmp += "0";
-				}
-				binaryC = binaryC_tmp + binaryC;
+				binaryC = paddingBinaryCode(nBits, binaryC.size(), binaryC);
 			}
-			//cout << "binary Code: " << binaryC << endl; 
-			
-			
 		}else{			// mGolomb is not a power of 2
-			//unaryC = unaryCode(q);
-			//cout << "unary Code: " << unaryC << endl;
 			
 			// 1º - Determine the first values of r (0,1,m-1)	
-			//nValuesR = pow(2,ceil(log2(mGolomb))) - mGolomb;
-			//cout << "r: " << r << " nValuesR: " << nValuesR << endl;
 			if (r < nValuesR)
 			{
-				// The binary code must have nBits of representation 
+				// The binary code must have 'nBits' of representation 
 				nBits = floor(log2(mGolomb));	// Para potencias != 2 tem-se b-1 bits
 				binaryC = positiveInt_to_binary(r, r%2);
-				
-				//cout << "Binary code initial: " << binaryC << endl;
-				//cout << "nBits binary Code: " << binaryC.size() << endl;
 				
 				// The first nValuesR values of r are represented with nBits.
 				// If binaryCode does not have the sufficient number 
 				//   of bits it is necessary to add zeros behind.
 				if ((int)binaryC.size() < nBits)
 				{
-					nBits = nBits - binaryC.size();
-					//cout << "bits que faltam: " << nBits << endl;
-					string binaryC_tmp {};
-					for (int i = 0; i < nBits; i++)
-					{
-						binaryC_tmp += "0";
-					}
-					binaryC = binaryC_tmp + binaryC;
+					binaryC = paddingBinaryCode(nBits, binaryC.size(), binaryC);
 				}
-				
 			}else{	
-				
-				//nBits = ceil(log2(mGolomb));
-				//cout << "nBits: " << nBits << endl;
-				//r = r + nBits;  // New value of r (new binary Code)
 				int newR = r + pow(2, nBits) - mGolomb;
-				//cout << "new R: " << r << endl;
 				binaryC = positiveInt_to_binary(newR, newR%2);
-				
-				//cout << "Binary code initial: " << binaryC << endl;
-				//cout << "nBits binary Code: " << binaryC.size() << endl;
 				
 				// If binaryCode does not have the sufficient number 
 				//   of bits it is necessary to add zeros behind.
 				if ((int)binaryC.size() < nBits)
 				{
-					nBits = nBits - binaryC.size();
-					string binaryC_tmp = {};
-					for (int i = 0; i < nBits; i++)
-					{
-						binaryC_tmp += "0";
-					}
-					binaryC = binaryC_tmp + binaryC;
+					binaryC = paddingBinaryCode(nBits, binaryC.size(), binaryC); 
 				}
 			}
 		}
@@ -225,167 +200,152 @@ class Golomb {
 	}
 	
 	
-	void encoder_writeToBinFile (string codeWord)
+	int encoder_writeToBinFile (string codeWord)
 	{
+		int padding = 0;
 		BitStream bsW { binaryFile, 'w'}; 
 		
 		while (codeWord.size() % 8 != 0)
 		{
 			codeWord += "0"; // add padding 
+			padding++;
 		}
 		bsW.write_Nbits(codeWord);
+		
+		return padding;
 	}
 	
 	
-	int decoder()
-	{
-		BitStream bsR { binaryFile, 'r'}; 
+	vector<short> decoder(vector<int> &codeWords)
+	{	
 		int q { 0 }; 
 		int r { 0 };
 		int n { 0 };
 		
-		// Determine unary Code
-		int bitUnary {};
-		while((bitUnary = bsR.read_bit()) == 1)
+		vector<short> samples;
+		
+		
+		int b = ceil(log2(mGolomb));
+		vector<int> binary;
+		bool unaryC = true;
+		int readBits_powerTwo = b;
+		int readBits_notPowerTwo = b-1;
+		
+		int bit0_unaryC = 0;
+		int auxCount = 0;
+		
+		for (size_t bit = 0; bit < codeWords.size(); bit++)	
 		{
-			//cout << "unaryCode: " << bitUnary << endl; 
-			q++; 
-		}
-		//cout << "q: " << q << endl;
-		
-		// mGolomb is a power of 2
-		if ((mGolomb & (mGolomb-1)) == 0)
-		{
-			cout << "DESCODIFICADOR - potencia de 2" << endl;
-			int b = ceil(log2(mGolomb));		// bit number of the binary code (b bits)
-			cout << "b: " << b << endl;
-			//vector<int> binary = bsR.read_Nbits(b);
-			vector<int> binary;
-			int BITS = b;
-			while(BITS != 0)
+			if (codeWords[bit] == 1 && unaryC == true)
 			{
-				binary.push_back(bsR.read_bit());
-				BITS--;
-			}
-			
-			//r = binary_to_integer(binary, b-1); // Get the integer(remainder) of the binary code
-			
-			int weigth {b-1};	// peso mais alto (se b=3-->weightMSigBit = 2)
-			// Applying the sum of the bit weights
-			for (int i = 0; i < b; i++)
-			{
-				cout << binary[i];
-				r += (pow(2,weigth) * binary[i]);
-				weigth--;
-			}
-			cout << endl;
-			cout << "r_final: " << r << endl;
-			
-			n = q * mGolomb + r;			
-			n = unfold_n(n);
-
-			return n;
-			
-		}else{	// mGolomb is not a power of 2 
-		
-			cout << "\nNAO potencia de 2:\n";
-		
-			int b = ceil(log2(mGolomb));   // bit number of the binary code 
-			cout << "b: " << b << endl;
-			//binaryCode of power diff of 2 has less than one bit
-			// le os primeiros valores da codeword , mas n le o ultimo bit do binary Code
-			//vector<int> binary = bsR.read_Nbits(b-1);  
-			vector<int> binary;
-			int BITS = b-1;
-			while(BITS != 0)
-			{
-				binary.push_back(bsR.read_bit());
-				BITS--;
-			}
-			//binary[b-1] = 0;	// add bit to binary code
-			
-			int weigth {b-2};
-			for (int i = 0; i < b-1; i++)
-			{
-				cout << binary[i];
-				r += (pow(2,weigth) * binary[i]);
-				weigth--;
-			}
-			cout << endl;
-			cout << "r_final: " << r << endl;
-			
-			//r = binary_to_integer(binary, b-2);
-			//cout << "r: " << r << endl;
-			
-			/** nota: 
-			* pow(2,b)-mGolomb: representa os primeiros valores de r que  
-			*	       contem b bits de representacao 
-			*/           
-			if (r < (pow(2,b)-mGolomb))
-			{
-				cout << "aqui_first_R" << endl;
-				n = q * mGolomb + r;			
-				n = unfold_n(n);
-				cout << "n: " << n << endl;
-				return n;
-			
+				q++;
+				bit0_unaryC = q;	// fixo 
+				auxCount = q;
 			}else{
-				cout << "aqui_LAST_R" << endl;
+				unaryC = false;
+				auxCount++;	// Se auxCout++
 				
-				// Como r > pow(2,b)-mGolomb, entao a representacao do binary Code passa a ter
-				// mais um bit !!!! Logo, falta-nos ler 1 bit para juntar ao vetor binary
-				
-				cout << "size: " << binary.size() << endl;
-				//binary[0] = bsR.read_bit(); 
-				binary.push_back(bsR.read_bit());
-				cout << "size: " << binary.size() << endl;
-				
-				//binary.push_back(bit);
-				
-				//binary.push_back(bsR.read_bit());	// ler o bit de menor peso
-				
-
-				r = 0; // r passa a ser diferente 
-				int weigth {b-1};
-				for (int i = 0; i < b; i++)
+				if (auxCount != (bit0_unaryC+1))
 				{
-					cout << binary[i];
-					r += (pow(2,weigth) * binary[i]);
-					weigth--;
+					// mGolomb is a power of 2
+					if ((mGolomb & (mGolomb-1)) == 0)
+					{
+						// ler b bits !!! 
+						binary.push_back(codeWords[bit]);
+						readBits_powerTwo--;
+						
+						if (readBits_powerTwo == 0)
+						{
+							r = binary_to_integer(binary, b);
+							
+							n = q * mGolomb + r;			
+							n = unfold_n(n);
+							samples.push_back(n); 
+							
+							// Initialize all values
+							unaryC = true;
+							readBits_powerTwo = b;
+							bit0_unaryC = 0;
+							auxCount = 0;
+							binary.clear();
+							q = 0;
+							r = 0;
+							n = 0;
+						}
+					}else{
+						// ler b-1 bits !!! 
+						binary.push_back(codeWords[bit]);
+						readBits_notPowerTwo--;
+						
+						if (readBits_notPowerTwo == 0)	// apenas para preencher binary com a parteBinaria
+						{
+							r = binary_to_integer(binary, b-1);
+						
+							/** 
+							* pow(2,b)-mGolomb: representa os primeiros valores de r que  
+							*	       contem b bits de representacao 
+							*/       
+							if (r < (pow(2,b)-mGolomb))
+							{
+								n = q * mGolomb + r;			
+								n = unfold_n(n);
+								
+								// Initialize all values
+								samples.push_back(n); 
+								unaryC = true;
+								readBits_notPowerTwo = b-1;
+								bit0_unaryC = 0;
+								auxCount = 0;
+								binary.clear();
+								q = 0;
+								r = 0;
+								n = 0;
+							
+							}
+						}else if (readBits_notPowerTwo == -1)	// If we have to read +1 bit 
+						{
+							
+							r = 0; // r passa a ser diferente 
+							r = binary_to_integer(binary, b);
+							
+							n = mGolomb*q + r;
+							n = unfold_n(n - (pow(2, b) - mGolomb));
+							
+							// Initialize all values
+							samples.push_back(n); 
+							unaryC = true;
+							readBits_notPowerTwo = b-1;
+							bit0_unaryC = 0;
+							auxCount = 0;
+							binary.clear();
+							q = 0;
+							r = 0;
+							n = 0;
+						}			
+					}
 				}
-				cout << endl;
-				cout << "r_final: " << r << endl;
-				
-				//n = mGolomb*q + (r-b);	// r nao e diretamente o binary Code 
-				n = mGolomb*q + r;
-				n = unfold_n(n - (pow(2, b) - mGolomb));
-				//n = unfold_n(n);
-				cout << "n: " << n << endl;
-				
-				/*
-				r = 0;
-				int weigth {0};
-				// Applying the sum of the bit weights
-				for (int i = b-1; i >= 0; i--) // da erro se n fizer aqui diretamente por causa do r
-				{
-					cout << binary[i] << endl;
-					r += (pow(2,weigth) * binary[i]);
-					weigth++;
-				}
-				n = mGolomb*q + r;
-				n = unfold_n(n - (pow(2, b) - mGolomb));
-				cout << "n: " << n << endl;*/
-				return n; 
 			}
 		}
-		
-		return 0;
+		return samples;
 	}
+	
+	int getOptimalm(const vector<short> samples)
+	{
+		double sum_m = 0;
+		double mean = 0;
+		int m = 0;
+		
+		for (size_t i = 0; i < samples.size(); i++)
+		{
+			sum_m += fold_n(samples[i]);
+		}
+		
+		mean = sum_m / samples.size();
+		m = ceil(-1/log2(mean/(mean+1)));
+		
+		return m;
+	}
+	
 
 };
-
-
-
-
-
 
