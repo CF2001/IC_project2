@@ -49,7 +49,7 @@ int main (int argc, char** argv)
 		return 1;
 	}
 	
-	/*
+	
 	int quantizationFactor; 
 	if (typeAudioCodec == 1)
 	{
@@ -64,7 +64,7 @@ int main (int argc, char** argv)
 		cerr << "Error: Wrong quantization factor.\n\n";
 		return 1;
 	}
-	*/
+	
 	
 	size_t nFrames;
 	vector<short> samples(FRAMES_BUFFER_SIZE * sndFile.channels()); // Amostras do fichiro original
@@ -80,16 +80,8 @@ int main (int argc, char** argv)
 			origSamples.push_back(samples[i]);
 		}
 	}	
-	
-	/*
-	for (size_t i = 0; i < origSamples.size(); i++)
-	{
-		cout << origSamples[i] << endl;
-	}
-	*/
-	
 	clock_t begin = clock();
-	audioC.compress(binaryFile, origSamples, typeAudioCodec, nPredictor, 3);
+	audioC.compress(binaryFile, origSamples, typeAudioCodec, nPredictor, quantizationFactor);
 	clock_t end = clock();
 	cout <<"Duration: " <<  (double(end - begin) / CLOCKS_PER_SEC) << endl;	// seconds 
 	cout << "Compressing finished..." << endl;

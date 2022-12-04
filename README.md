@@ -1,3 +1,6 @@
+First: 
+	src/ make 
+
 
 To test exercise 1:
 
