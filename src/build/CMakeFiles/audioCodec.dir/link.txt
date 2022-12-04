@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -Wextra -std=c++17 -O3   CMakeFiles/audioCodec.dir/audioCodec.cpp.o  -o /home/anaclaudia/Documents/UA/4_Ano/IC/IC_project2/src-bin/audioCodec  -lsndfile 

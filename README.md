@@ -26,10 +26,10 @@ To test exercise 3:
 
 	../src-bin/Golomb <inFileTxt> <outFileTxt> <binary File> <m> 
 	
-		<inFileTxt> => input text file
-		<outFileTxt> => output text file
-		<binary file> => .out file 
-		<m> => integer Golomb parameter
+		<inFileTxt> 	=> input text file
+		<outFileTxt> 	=> output text file
+		<binary file> 	=> .out file 
+		<m> 		=> integer Golomb parameter
 		
 	Exemplification:
 		../src-bin/Golomb encodeInt.txt decodeInt.txt binGolomb.out 8
@@ -37,4 +37,13 @@ To test exercise 3:
 
 To test exercise 4:
 	
-		../src-bin/audioCodec <wav file> <binary file> <typeAudioCodec> <nPredictor> 
+		../src-bin/audioCodec <wavfileIn> <wavfileOut> <binary file> <typeAudioCodec> <nPredictor>
+		
+		<wavfileIn> 		=> input wav file
+		<wavfileOut> 		=> output wav file
+		<binary file>		=> .out file
+		<typeAudioCodec>	=> 0 (lossless) | 1 (lossy)
+		<nPredictor>		=> 1 | 2 | 3
+		
+		Exemplification:
+			../src-bin/audioCodec ../audioFiles/sample03.wav audioOut.wav compress.out 1 2

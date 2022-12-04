@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sndfile.hh>
 #include <vector>
+#include <ctime>
 
 #include "AudioCodec.h"
 
@@ -55,14 +56,15 @@ int main (int argc, char** argv)
 		cout << "Enter the quantization factor: " << endl;
 		cin >> quantizationFactor;
 	}else{
-		quantizationFactor = 1;	// initialization
+		quantizationFactor = 1;	// initialization 
 	}
 	
 	if (quantizationFactor < 0 || quantizationFactor > 15)
 	{
 		cerr << "Error: Wrong quantization factor.\n\n";
 		return 1;
-	}*/
+	}
+	*/
 	
 	size_t nFrames;
 	vector<short> samples(FRAMES_BUFFER_SIZE * sndFile.channels()); // Amostras do fichiro original
@@ -86,8 +88,16 @@ int main (int argc, char** argv)
 	}
 	*/
 	
-	audioC.compress(binaryFile, origSamples, typeAudioCodec, nPredictor, 2);
+	clock_t begin = clock();
+	audioC.compress(binaryFile, origSamples, typeAudioCodec, nPredictor, 3);
+	clock_t end = clock();
+	cout <<"Duration: " <<  (double(end - begin) / CLOCKS_PER_SEC) << endl;	// seconds 
+	cout << "Compressing finished..." << endl;
+	
+	
 	audioC.decompress(binaryFile, outputFileWav, nPredictor);
+	
+	return 0;
 }
 
 
