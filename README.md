@@ -35,7 +35,7 @@ To test exercise 3:
 		../src-bin/Golomb encodeInt.txt decodeInt.txt binGolomb.out 8
 		
 
-To test exercise 4:
+To test exercise 4 and 5:
 	
 		../src-bin/audioCodec <wavfileIn> <wavfileOut> <binary file> <typeAudioCodec> <nPredictor>
 		
