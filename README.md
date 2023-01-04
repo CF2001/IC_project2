@@ -52,4 +52,4 @@ To test exercise 4 and 5:
 			../src-bin/audioCodec ../audioFiles/sample03.wav audioOut.wav compress.out 1 2
 			
 *** 
-Grade: 15,0
+### Grade: 15,0
