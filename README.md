@@ -1,3 +1,5 @@
+### Project 2 - Information and coding
+
 First: 
 	src/ make 
 
